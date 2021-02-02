@@ -15,4 +15,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "5.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0"
 )
+libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.2.0" % "test"
 

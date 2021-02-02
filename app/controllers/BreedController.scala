@@ -15,7 +15,7 @@ import ExecutionContext.Implicits.global
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents, catApiService:CatApiService, searchDb:SearchesDAO) extends BaseController {
+class BreedController @Inject()(val controllerComponents: ControllerComponents, catApiService:CatApiService, searchDb:SearchesDAO) extends BaseController {
 
   implicit val breedFormat = Json.format[Breed]
   implicit val searchFormat = Json.format[Search]
