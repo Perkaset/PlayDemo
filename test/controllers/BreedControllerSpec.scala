@@ -1,6 +1,6 @@
 package controllers
 
-import model.Breed
+import model.{Breed, Search}
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
@@ -28,15 +28,18 @@ class BreedControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       val searchDb = mock[SearchesDAO]
 
       val stringSearch = "bengal"
-      val result = Future.successful(Seq(Breed("Beng", "Bengal", "Description", "Lazy", "Brazil")))
+      val apiResult = Future.successful(Seq(Breed("Beng", "Bengal", "Description", "Lazy", "Brazil")))
+      val dbResult = Future.successful(())
       val controller = new BreedController(stubControllerComponents(), apiService, searchDb)
+
+      when(apiService.searchBreed(any[String])).thenReturn(apiResult)
+      when(searchDb.saveSearch(any[Search])).thenReturn(dbResult)
+
       val search = controller.searchBreed(stringSearch).apply(FakeRequest(GET, s"/breed?searchString=$stringSearch"))
 
-      when(apiService.searchBreed(any[String])).thenReturn(result)
-
       status(search) mustBe OK
-      contentType(search) mustBe Some("text/html")
-      contentAsString(search) must include ("Success")
+      contentType(search) mustBe Some("application/json")
+      contentAsString(search) must include ("Bengal")
     }
   }
 }
